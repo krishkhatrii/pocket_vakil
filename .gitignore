@@ -1,0 +1,29 @@
+# Data - reproducible from scripts, several GB
+data/
+*.jsonl
+*.parquet
+*.bin
+*.npy
+
+# Model artifacts
+checkpoints/
+*.pt
+*.safetensors
+tokenizer/
+
+# Environment
+.vakil_env/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# HF cache if it lands in-repo
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep run logs
+!runs/*.md

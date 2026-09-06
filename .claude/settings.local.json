@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./.vakil_env/bin/python -c ' *)",
+      "Bash(timeout 300 ./.vakil_env/bin/python -c ' *)"
+    ]
+  }
+}
