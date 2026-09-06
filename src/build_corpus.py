@@ -23,6 +23,7 @@ import argparse
 import json
 import re
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 import pyarrow.parquet as pq
@@ -156,8 +157,9 @@ def process(filename, n_groups, year_max, source, out, min_chars):
             chunks.append(r)
             if len(chunks) == r["total_chunks"]:
                 emit(pending.pop(r["case_id"]))
-        print(f"   {filename[:34]:34s} {i+1}/{len(groups)} groups, "
-              f"{seen:,} seen, {written:,} docs, {len(pending):,} open", end="\r")
+        print(f"   [{datetime.now():%Y-%m-%d %H:%M:%S}] {filename[:34]:34s} "
+              f"{i+1}/{len(groups)} groups, {seen:,} seen, {written:,} docs, "
+              f"{chars/1e6:.1f}M chars, {len(pending):,} open", flush=True)
 
     # Whatever never completed is missing chunks in the source, not a straddler.
     # Emit what exists -- dropping it would truncate judgments silently.

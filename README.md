@@ -29,7 +29,8 @@ are served publicly on gated repos, so those succeeding does not mean you have a
 python src/build_corpus.py                  # full extraction, all 7 courts
 python src/build_corpus.py --row-groups 3   # quick trial first
 
-# 2. Inspect ILSI (download from Zenodo DOI 10.5281/zenodo.6053791)
+# 2. Fetch and inspect ILSI (no Zenodo download needed)
+python src/fetch_ilsi.py
 python src/inspect_ilsi.py data/ilsi/
 ```
 
@@ -40,6 +41,7 @@ Then: tokenizer → pack to shards → TF-IDF baseline → pretrain → fine-tun
 | Script | Does | Produces |
 |---|---|---|
 | `build_corpus.py` | Filters Open India Law to English, `year <= 2020`, six ILSI High Courts + SC. Strips headers and markers, reassembles chunks by `case_id`, trims overlap. | `data/corpus.jsonl` |
+| `fetch_ilsi.py` | Pulls ILSI from the IL-TUR mirror on the Hub, resolves its integer labels to section ids, writes the label map. | `data/ilsi/*.jsonl`, `label_map.json` |
 | `inspect_ilsi.py` | Label vocab, labels-per-doc, label frequency skew, text lengths, `sec_src` key alignment. | stdout |
 
 ### build_corpus.py flags
@@ -66,6 +68,7 @@ pocket_vakil/
 │
 ├── src/
 │   ├── build_corpus.py
+│   ├── fetch_ilsi.py
 │   ├── inspect_ilsi.py
 │   ├── train_tokenizer.py
 │   ├── pack.py
@@ -73,7 +76,7 @@ pocket_vakil/
 │
 ├── data/                gitignored — large and reproducible
 │   ├── corpus.jsonl     pretraining corpus, cleaned
-│   ├── ilsi/            train/dev/test + sec_src, from Zenodo
+│   ├── ilsi/            train/dev/test + sec_src + label_map.json
 │   ├── tokenizer/       vocab + merges — frozen once training starts
 │   └── shards/          packed uint16 token windows for the GPU
 │
@@ -87,6 +90,8 @@ the scripts.
 
 **The tokenizer is frozen once training starts.** Retraining it invalidates every packed
 shard, because token IDs shift. Keep exactly one and record its vocab size in `runs/`.
+Freeze `data/ilsi/label_map.json` alongside it — that file defines the 100 special tokens
+and the reverse map used at evaluation, so a change there breaks both.
 
 **Shards are why packing happens locally.** Training memory-maps a shard and reads
 slices — no parsing or tokenizing in the hot loop. The packed ~2B tokens at 2 bytes each
@@ -117,7 +122,9 @@ Tokenize and pack locally. GPU time is for gradient steps only.
 Pretraining data: [Open India Law](https://huggingface.co/datasets/vaquill/open-india-law)
 (Vaquill AI), CC BY 4.0. Attribution is a condition of the licence.
 
-Fine-tuning data: ILSI, from Paul, Goyal & Ghosh, *LeSICiN*, AAAI 2022.
+Fine-tuning data: ILSI, from Paul, Goyal & Ghosh, *LeSICiN*, AAAI 2022. Accessed via the
+IL-TUR mirror (`Exploration-Lab/IL-TUR`, ACL 2024) rather than the Zenodo original — cite
+both.
 
 ## Disclaimer
 

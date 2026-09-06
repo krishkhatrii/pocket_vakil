@@ -5,6 +5,10 @@ data/
 *.bin
 *.npy
 
+logs/
+runs/*.pt
+
+
 # Model artifacts
 checkpoints/
 *.pt
