@@ -27,3 +27,5 @@ Thumbs.db
 
 # Keep run logs
 !runs/*.md
+
+.claude/
