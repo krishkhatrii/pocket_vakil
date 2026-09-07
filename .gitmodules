@@ -1,0 +1,3 @@
+[submodule "external/olm"]
+	path = external/olm
+	url = https://github.com/openlanguagemodel/openlanguagemodel.git
