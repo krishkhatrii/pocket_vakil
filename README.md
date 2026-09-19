@@ -164,20 +164,19 @@ it defines the 100 special tokens and the reverse map used at eval.
 ```
 pocket_vakil/
 ├── README.md
-├── PLAN.md design decisions
-├── FINDINGS.md measured facts and gotchas
-├── demo_layman.py plain-language demo
-├── predict.py inference entry point (also on HF)
-├── inference_hf.py reproduces reported results via transformers
-├── convert_to_hf.py OLM → HF conversion
-├── make_plots.py generates submission figures
+├── PLAN.md                      design decisions
+├── FINDINGS.md                  measured facts and gotchas
+├── demo_layman.py               plain-language demo
+├── predict.py                   inference entry point (also on HF)
 │
-├── src/ pipeline: corpus → tokenizer → pack → train → eval
-├── runs/ per-run logs and metrics
-├── logs/ extraction and verification logs
-├── submission/ frozen bootcamp submission bundle
-├── archive/ one-off diagnostics and superseded artifacts
-└── data/ manifests only; corpus and shards gitignored
+├── src/                         pipeline: corpus → tokenizer → pack → train → eval
+│                                plus convert_to_hf.py, inference_hf.py,
+│                                make_plots.py, generate_submission_files.py
+├── runs/                        run logs, metrics, and eval results
+├── logs/                        extraction and verification logs
+├── submission/                  frozen bootcamp submission bundle
+├── archive/                     one-off diagnostics and superseded artifacts
+└── data/                        manifests only; corpus and shards gitignored
 ```
 
 

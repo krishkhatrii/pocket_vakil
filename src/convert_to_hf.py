@@ -507,7 +507,10 @@ def main():
 
     print("\n  comparing logits against the original OLM model...")
     try:
-        sys.path.insert(0, "src")
+        # sys.path.insert(0, "src")
+        from pathlib import Path
+        _here = Path(__file__).resolve().parent
+        sys.path.insert(0, str(_here if (_here / "model.py").exists() else _here.parent / "src"))
         from model import CONFIGS, build_model
         olm = build_model(CONFIGS["prod_300m"])
         olm.load_state_dict(sd)
