@@ -21,6 +21,7 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+*.pdf
 
 # --- Weights & checkpoints (12 GB; published at HF instead) ---
 /checkpoints/*

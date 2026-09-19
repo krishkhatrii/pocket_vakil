@@ -1,4 +1,0 @@
-nohup: ignoring input
-13,019 test rows | 100 label tokens | multi-label 11,475 (88.1%), max 23 labels/row
-loaded ./checkpoints/final_model.pt (step None)
-   48/13,019

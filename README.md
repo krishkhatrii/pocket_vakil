@@ -161,6 +161,7 @@ invalidates every packed shard. `data/ilsi/label_map.json` is frozen alongside i
 it defines the 100 special tokens and the reverse map used at eval.
 
 ## Layout
+```
 pocket_vakil/
 ├── README.md
 ├── PLAN.md design decisions
@@ -173,11 +174,11 @@ pocket_vakil/
 │
 ├── src/ pipeline: corpus → tokenizer → pack → train → eval
 ├── runs/ per-run logs and metrics
-├── runs_backup/runs/ canonical run archive
 ├── logs/ extraction and verification logs
 ├── submission/ frozen bootcamp submission bundle
 ├── archive/ one-off diagnostics and superseded artifacts
 └── data/ manifests only; corpus and shards gitignored
+```
 
 
 Weights, checkpoints, packed shards, and the raw corpus are gitignored — ~32 GB, all
