@@ -1,0 +1,24 @@
+tokenising (GPT-2 50k BPE)...
+  train over 2048 tokens: 10,589/42,750 (24.8%)   dev 2,906   test 3,512   [8s]
+
+baseline: untruncated
+  micro 0.4941  macro 0.2858   [175s]
+
+strategy: head
+  micro 0.4890  macro 0.2809   [281s]
+
+strategy: tail
+  micro 0.4866  macro 0.2820   [390s]
+
+strategy: head_tail
+  micro 0.4899  macro 0.2774   [500s]
+
+feature survival on long test docs (top-50 per label)...
+
+strategy         micro   macro  zeroF1  docs losing all feats
+untruncated     0.4941  0.2858      10                      -
+head            0.4890  0.2809       9                   0.0%
+tail            0.4866  0.2820      11                   0.0%
+head_tail       0.4899  0.2774      11                   0.0%
+
+-> runs\truncation_test.json   [511s]

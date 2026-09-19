@@ -1,35 +1,58 @@
-# Data - reproducible from scripts, several GB
-data/
-*.jsonl
-*.parquet
-*.bin
-*.npy
+# ---------------------------------------------------------------
+# Pocket Vakil — public release
+#
+# Two deliberate departures from the previous version:
+#   * no blanket `*.jsonl` — it was hiding every training log
+#   * `/data/` is anchored — unanchored `data/` also swallowed
+#     submission/data/
+# Weights live at https://huggingface.co/Pocket-Vakil/pocket-vakil-332m-ipc
+# ---------------------------------------------------------------
 
-logs/
-runs/*.pt
-
-
-# Model artifacts
-checkpoints/
-*.pt
-*.safetensors
-tokenizer/
-
-# Environment
+# --- Environments, caches, editor state ---
 .vakil_env/
 venv/
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
 .ipynb_checkpoints/
-
-# HF cache if it lands in-repo
 .cache/
-
-# OS
+.claude/
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
 
-# Keep run logs
-!runs/*.md
+# --- Weights & checkpoints (12 GB; published at HF instead) ---
+/checkpoints/*
+!/checkpoints/eval_test.json
+*.pt
+*.safetensors
+*.bin
+*.npy
 
-.claude/
+# --- Archives. Without this, pocket-vakil-332m-ipc.zip (1.18 GB)
+#     is staged and the push is rejected. ---
+*.zip
+
+# --- Corpus, shards, tokenized splits: keep the manifests only ---
+/data/**
+!/data/
+!/data/shards/
+!/data/shards/manifest.json
+!/data/ilsi/
+!/data/ilsi/label_map.json
+!/data/ilsi/sec_src.jsonl
+!/data/ilsi_ft/
+!/data/ilsi_ft/manifest.json
+!/data/tokenizer/
+!/data/tokenizer/bpe_32000_final.json
+!/data/tokenizer/bpe_32000_final_report.json
+!/data/tokenizer/comparison.json
+
+# --- Submission bundle: drop the 67 MB duplicate of the test split,
+#     keep manifest.json, figures, results and both train logs. ---
+/submission/data/ilsi_ft_v2/
+
+# --- If you adopt archive/, decide consciously whether it ships.
+#     Uncomment to keep it local:
+# /archive/

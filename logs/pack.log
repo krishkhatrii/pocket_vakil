@@ -1,0 +1,30 @@
+tokenizer bpe_32000_final.json  vocab 32,000  eos_id 0
+sha256 b2de5ea09885462611a73045cc98d88f670f0893ce7518bc6e36d1895dde8203
+   [00:00:05] line 304,199  410M tokens  200,052 seqs  10 shards
+   [00:00:05] line 304,399  410M tokens  200,124 seqs  10 shards
+   [00:00:05] line 304,599  410M tokens  200,190 seqs  10 shards
+   [00:05:12] line 600,399  615M tokens  300,056 seqs  15 shards
+   [00:05:12] line 600,599  615M tokens  300,147 seqs  15 shards
+   [00:09:41] line 809,399  819M tokens  400,025 seqs  20 shards
+   [00:09:41] line 809,599  819M tokens  400,076 seqs  20 shards
+   [00:09:41] line 809,799  819M tokens  400,124 seqs  20 shards
+   [00:09:41] line 809,999  820M tokens  400,175 seqs  20 shards
+   [00:14:16] line 1,803,401  1,024M tokens  500,115 seqs  25 shards
+   [00:18:10] line 1,910,201  1,229M tokens  600,187 seqs  30 shards
+   [00:22:34] line 2,060,201  1,434M tokens  700,059 seqs  35 shards
+   [00:22:34] line 2,060,401  1,434M tokens  700,130 seqs  35 shards
+   [00:25:49] line 2,289,001  1,639M tokens  800,064 seqs  40 shards
+   [00:25:49] line 2,289,201  1,639M tokens  800,190 seqs  40 shards
+
+=== data\shards ===
+   supreme_court        234.8M tokens   11.7%  dropped 0 docs
+   allahabad            336.0M tokens   16.8%  dropped 0 docs
+   bombay               351.6M tokens   17.6%  dropped 827,402 docs (CAPPED)
+   calcutta               4.8M tokens    0.2%  dropped 0 docs
+   delhi                430.9M tokens   21.5%  dropped 0 docs
+   madhya_pradesh       289.9M tokens   14.5%  dropped 0 docs
+   madras               351.6M tokens   17.6%  dropped 410,596 docs (CAPPED)
+   TOTAL               1999.6M tokens
+   packed 1999.6M in 976,379 sequences, 49 shards (4.00 GB)
+   discarded remainder: 712 tokens (< one sequence)
+   -> data\shards\manifest.json   [2375s]

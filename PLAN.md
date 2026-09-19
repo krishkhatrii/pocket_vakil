@@ -42,6 +42,7 @@ Fixed by the OLM cost-frontier planner. **Not to be exceeded.**
 | Tokens processed | 6B (hard ceiling) |
 | Unique tokens | ~2B, 3 epochs |
 | GPU | 2 × 20h H100 |
+| Vocabulary | **32,000**, tied embeddings (decided 2026-09-06) |
 
 Check: 6ND = 6 × 3e8 × 6e9 = 1.08e19 FLOPs. H100 BF16 ≈ 989 TFLOPs dense; at 30% MFU
 that is ~10 hours of pretraining. 300M × 20 tokens/param = 6B, so this point is
@@ -49,6 +50,19 @@ compute-optimal by construction.
 
 Indicative architecture: d_model 1024, 24 layers, 16 heads
 (12 · n_layer · d_model² ≈ 302M non-embedding).
+
+**Vocabulary decided 2026-09-06: 32k, tied.** Both sizes were trained and measured.
+16k gave 4.228 chars/token on held-out corpus — *no better than GPT-2's 4.24*, so an
+in-domain vocabulary bought nothing at that size and the case for a project tokenizer
+collapses. 32k gave 4.418, a 4.5% gain, which is what justifies the extra 16.4M
+embedding parameters. Tied embeddings keep that at 32.8M total (9.8% of the model);
+untied would be 65.5M (17.8%), spending model capacity on the embedding table.
+See `FINDINGS.md` *Decision 4*.
+
+**Unique-token budget: ~2B under the Decision 2 caps, 3 epochs.** 3.07B is available,
+so taking more unique tokens was possible and was rejected: uncapped, Bombay and Madras
+are 59% of the corpus, and evaluation draws on all seven courts. Court diversity is
+worth more here than unique-token count.
 
 The remaining hours are deliberately kept as recovery room, not spent on a larger model.
 
@@ -147,10 +161,12 @@ generation is what the bootcamp is about.
    reassembled and cleaned. Target ~2B tokens.
 2. **ILSI inspection.** p90 fact length in tokens (does 2048 suffice?), count of labels
    with <10 training examples (caps achievable macro-F1), exact label string format.
-3. **Tokenizer.** BPE on corpus + ILSI train + `sec_src`, plus the 100 label tokens.
-   Compare 16k vs 32k vocab — 32k costs ~33M embedding params, 11% of the budget.
-4. **Pack.** Pre-tokenize the whole corpus into binary shards **on laptop**. No
-   tokenization on GPU time.
+3. **Tokenizer.** *Done.* Byte-level BPE on corpus + ILSI train + `sec_src`, plus the
+   100 label tokens, the 3 ILSI mask tokens and EOS. 16k and 32k compared; **32k chosen
+   and frozen**, fit to the capped mix so the vocabulary matches the distribution
+   actually pretrained on.
+4. **Pack.** Pre-tokenize into uint16 shards **on laptop**, applying the Decision 2
+   caps at pack time. No tokenization on GPU time.
 5. **Baseline.** TF-IDF + one-vs-rest logistic regression on ILSI, before any GPU time.
    Cheap, and a from-scratch SLM that cannot beat it is a signal worth having early.
 6. **Pretraining.** Causal LM in OLM, 300M params, context 2048, 3 epochs over ~2B

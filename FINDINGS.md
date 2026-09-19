@@ -18,6 +18,11 @@ processed · ~2B unique × 3 epochs · 2 × 20h H100.
 Check: 6ND = 1.08e19 FLOPs → ~10h at 30% MFU.
 Arch: d_model 1024, 24 layers, 16 heads.
 
+**Tokenizer: 32k byte-level BPE, tied embeddings. FROZEN** — `bpe_32000_final.json`,
+fit to the Decision 2 capped mix. Reasoning in *Decision 4*. Retraining it invalidates
+every shard and every checkpoint; the hash in `data/shards/manifest.json` is what ties
+a run to its vocabulary.
+
 **Task:** situation description in, subset of 100 IPC sections out. Closed set, cannot
 abstain. Trained and measured on ILSI court-fact text; accepts layperson phrasing at
 demo time but that performance is unmeasured and expected lower (ILSIC, EACL 2026).
@@ -90,10 +95,32 @@ re-chunked to 8 row groups). Peak memory 99→50 MB and 181→42 MB; the new pea
 file size, the old grows. Output *line order* now follows completion rather than
 first appearance — the corpus is a set of documents, so this is immaterial.
 
-**4. chars/token to be re-measured** with the project's own BPE, after the 16k-vs-32k
-vocab decision and before packing. The 4.24 figure below is GPT-2's 50k BPE and will not
-transfer — an in-domain 32k vocab should compress legal boilerplate better, a 16k vocab
-worse. Every token total in this file inherits that ratio and is provisional until then.
+**4. Vocab: 32k, tied embeddings. DECIDED 2026-09-06 and frozen.** Both sizes were
+trained and measured (`src/train_tokenizer.py`, *Tokenizer* below).
+
+| | 16k | **32k** |
+|---|---:|---:|
+| chars/token, held-out corpus | 4.228 | **4.418** |
+| chars/token, ILSI facts | 4.467 | **4.604** |
+| embedding params, tied | 16.4M (5.1%) | **32.8M (9.8%)** |
+
+**The deciding number is that 16k gave 4.228 on corpus — no better than GPT-2's 4.24.**
+An in-domain 16k vocabulary bought *nothing* on the pretraining corpus over a generic
+50k one, so the whole premise of a domain vocab fails at that size. 32k's 4.418 is a
+genuine 4.5% gain, and that is what justifies the extra 16.4M parameters at 9.8% of the
+budget tied. **Tied, not untied** — untied would be 65.5M (17.8%), which is real model
+capacity spent on the embedding table rather than on depth.
+
+Consequence: the 4.24 GPT-2 ratio that every earlier token figure in this file inherits
+is superseded by **4.418** (corpus) and **4.604** (ILSI facts). Figures below still
+carrying 4.28 are flagged where they matter.
+
+**4b. Budget: 2B unique × 3 epochs, with the Decision 2 caps.** Kept the caps rather than
+taking more unique tokens: 3.07B is available, so the alternative was reachable. Court
+diversity is worth more than unique-token count here — uncapped, Bombay and Madras alone
+are 59% of the corpus, and the evaluation set draws on all seven courts. Spending the
+extra tokens would have bought volume at the cost of skewing pretraining toward two
+registries.
 
 ---
 

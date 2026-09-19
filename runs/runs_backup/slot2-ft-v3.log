@@ -1,0 +1,33 @@
+nohup: ignoring input
+[olm_patches] OLM 2.2.0: API check passed (12 module attrs, 13 trainer attrs, ignore_index OK)
+[olm_patches] precision: bf16 (cuda bf16 supported)
+[olm_patches] applied: autocast->torch.bfloat16, Trainer.load_state
+[verify] tokenizer sha256 b2de5ea098854626... OK
+[data] ILSI train 40,916 examples (0 need input truncation)
+[model] prod_300m: 299.2M non-embedding, 332.0M total
+[sched] 3.0 epochs, 852 steps/epoch, 2,556 total steps
+[init] weights from checkpoints/slot1-pretrain/step_10000.pt (step 10000)
+Initialized WarmupCosineScheduler: warmup_steps=200, total_steps=2556, min_lr=5e-06
+Epoch  |   Step   |    Loss    | Perplexity  |  Tokens/s  |     LR    
+--------------------------------------------------------------------------------
+  1    |    10    |   8.5819   |   5334.08   |   65864    |  2.75e-06 
+  1    |    20    |   8.3478   |   4221.08   |   64642    |  5.25e-06 
+  1    |    30    |   5.1471   |   171.94    |   64257    |  7.75e-06 
+  1    |    40    |   3.8845   |    48.64    |   63137    |  1.03e-05 
+  1    |    50    |   2.6589   |    14.28    |   63810    |  1.28e-05 
+  1    |    60    |   2.8195   |    16.77    |   64025    |  1.52e-05 
+  1    |    70    |   2.7449   |    15.56    |   64308    |  1.78e-05 
+  1    |    80    |   2.4200   |    11.25    |   64223    |  2.03e-05 
+  1    |    90    |   2.6771   |    14.54    |   64269    |  2.28e-05 
+  1    |   100    |   2.1553   |    8.63     |   64109    |  2.53e-05 
+  1    |   110    |   2.6017   |    13.49    |   63575    |  2.78e-05 
+  1    |   120    |   2.7226   |    15.22    |   63981    |  3.03e-05 
+  1    |   130    |   2.0609   |    7.85     |   64347    |  3.28e-05 
+  1    |   140    |   1.4886   |    4.43     |   63849    |  3.53e-05 
+  1    |   150    |   1.7662   |    5.85     |   63962    |  3.78e-05 
+  1    |   160    |   2.3369   |    10.35    |   63745    |  4.03e-05 
+  1    |   170    |   2.0977   |    8.15     |   63660    |  4.28e-05 
+  1    |   180    |   1.6871   |    5.40     |   63853    |  4.53e-05 
+  1    |   190    |   1.4968   |    4.47     |   63518    |  4.78e-05 
+  1    |   200    |   1.7859   |    5.96     |   63724    |  5.00e-05 
+  1    |   210    |   1.8441   |    6.32     |   63691    |  5.00e-05 

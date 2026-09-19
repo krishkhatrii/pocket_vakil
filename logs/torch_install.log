@@ -1,0 +1,35 @@
+Looking in indexes: https://download.pytorch.org/whl/cpu
+Collecting torch
+  Downloading torch-2.14.0%2Bcpu-cp310-cp310-win_amd64.whl.metadata (38 kB)
+Requirement already satisfied: filelock in .\.vakil_env\lib\site-packages (from torch) (3.32.5)
+Requirement already satisfied: typing-extensions>=4.10.0 in .\.vakil_env\lib\site-packages (from torch) (4.16.0)
+Collecting setuptools>=77.0.3 (from torch)
+  Downloading setuptools-78.1.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting sympy>=1.13.3 (from torch)
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx>=2.5.1 (from torch)
+  Using cached networkx-3.4.2-py3-none-any.whl.metadata (6.3 kB)
+Collecting jinja2 (from torch)
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Requirement already satisfied: fsspec>=0.8.5 in .\.vakil_env\lib\site-packages (from torch) (2026.7.0)
+Collecting mpmath<1.4,>=1.1.0 (from sympy>=1.13.3->torch)
+  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->torch)
+  Downloading markupsafe-3.0.3-cp310-cp310-win_amd64.whl.metadata (2.8 kB)
+Downloading torch-2.14.0%2Bcpu-cp310-cp310-win_amd64.whl (124.0 MB)
+   ---------------------------------------- 124.0/124.0 MB 78.4 MB/s  0:00:01
+Using cached networkx-3.4.2-py3-none-any.whl (1.7 MB)
+Downloading setuptools-78.1.0-py3-none-any.whl (1.3 MB)
+   ---------------------------------------- 1.3/1.3 MB 32.1 MB/s  0:00:00
+Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+   ---------------------------------------- 6.3/6.3 MB 10.2 MB/s  0:00:01
+Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading markupsafe-3.0.3-cp310-cp310-win_amd64.whl (15 kB)
+Installing collected packages: mpmath, sympy, setuptools, networkx, MarkupSafe, jinja2, torch
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 65.5.0
+    Uninstalling setuptools-65.5.0:
+      Successfully uninstalled setuptools-65.5.0
+
+Successfully installed MarkupSafe-3.0.3 jinja2-3.1.6 mpmath-1.3.0 networkx-3.4.2 setuptools-78.1.0 sympy-1.14.0 torch-2.14.0+cpu

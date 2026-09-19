@@ -1,0 +1,94 @@
+
+    def to_dict(self):
+        return asdict(self)
+
+
+CONTEXT_LEN = 2048          # identical across presets, matches the packed shards
+
+# CPU correctness checks. Too small to learn anything; big enough to prove the
+# plumbing (masking, resume, parsing) is right.
+TINY = ModelConfig(
+    name="tiny",
+    embed_dim=128,
+    num_heads=4,
+    num_layers=2,
+    max_seq_len=CONTEXT_LEN,
+)
+
+# Single-GPU rehearsal at the production sequence length.
+DRY_RUN = ModelConfig(
+    name="dry_run",
+    embed_dim=512,
+    num_heads=8,
+    num_layers=8,
+    max_seq_len=CONTEXT_LEN,
+)
+
+# Production. Measured at 299.2M non-embedding, against the 300M budget in
+# PLAN.md section 2 (6ND = 6 * 3e8 * 6e9 ~ 1.08e19 FLOPs).
+PROD_300M = ModelConfig(
+    name="prod_300m",
+    embed_dim=1024,
+    num_heads=16,
+    num_layers=24,
+    max_seq_len=CONTEXT_LEN,
+)
+
+CONFIGS = {"tiny": TINY, "dry_run": DRY_RUN, "prod_300m": PROD_300M}
+
+
+def apply_scaled_init(model: LM, std: float = 0.02) -> LM:
+    """Re-initialise embeddings and linears at std=0.02. **This overrides an OLM default.**
+total 3905924
+drwx------ 2 team15 team15     4096 Sep  7 23:34 .
+drwx------ 8 team15 team15     4096 Sep 11 00:50 ..
+-rw-r--r-- 1 team15 team15     9012 Sep  7 23:09 manifest.json
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:10 shard_0000.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:10 shard_0001.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:11 shard_0002.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:11 shard_0003.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:12 shard_0004.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:12 shard_0005.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:13 shard_0006.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:13 shard_0007.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:14 shard_0008.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:14 shard_0009.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:15 shard_0010.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:15 shard_0011.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:16 shard_0012.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:17 shard_0013.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:17 shard_0014.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:18 shard_0015.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:18 shard_0016.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:19 shard_0017.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:19 shard_0018.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:20 shard_0019.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:20 shard_0020.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:21 shard_0021.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:21 shard_0022.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:22 shard_0023.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:22 shard_0024.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:23 shard_0025.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:23 shard_0026.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:24 shard_0027.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:24 shard_0028.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:25 shard_0029.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:25 shard_0030.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:26 shard_0031.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:26 shard_0032.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:27 shard_0033.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:27 shard_0034.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:28 shard_0035.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:28 shard_0036.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:29 shard_0037.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:29 shard_0038.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:30 shard_0039.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:30 shard_0040.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:31 shard_0041.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:31 shard_0042.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:32 shard_0043.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:32 shard_0044.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:33 shard_0045.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:33 shard_0046.npy
+-rw-r--r-- 1 team15 team15 81920128 Sep  7 23:34 shard_0047.npy
+-rw-r--r-- 1 team15 team15 67088512 Sep  7 23:34 shard_0048.npy

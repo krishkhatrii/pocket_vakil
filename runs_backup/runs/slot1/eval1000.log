@@ -1,0 +1,24 @@
+nohup: ignoring input
+1,000 test rows | 100 label tokens | multi-label 877 (87.7%), max 21 labels/row
+loaded ./checkpoints/final_model.pt (step None)
+   16/1,000
+   336/1,000
+   656/1,000
+   976/1,000
+generated in 2045s
+
+=== ILSI test (1,000 rows, multi-label) ===
+   micro-F1     0.2408   (baseline 0.4941, -0.2533)
+   macro-F1     0.1356   (baseline 0.2858, -0.1502)
+   micro-P / R  0.4664 / 0.1623
+   exact match  0.0380   (all sections right, none missing)
+   labels with F1 = 0.0: 40/100
+
+   PARSE FAILURES (measured, not repaired)
+      duplicate       1  ( 0.10%)
+      no_eos        225  (22.50%)
+      non_label     408  (40.80%)
+      empty         399  (39.90%)
+      ANY           433  (43.30%)
+
+   -> runs/slot1/eval_test_1000.json

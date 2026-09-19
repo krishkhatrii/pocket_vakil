@@ -1,0 +1,12 @@
+100 label sections from label_map.json
+loaded  train 42,750  dev 10,181  test 13,019   [2s]
+tfidf   42,750 x 200,000   nnz/doc 850   [83s]
+fit     100 binary classifiers   [156s]
+thresh  0.20 (dev micro-F1 0.4969)   [161s]
+
+=== ILSI test (13,019 docs) ===
+   micro-F1 0.4941
+   macro-F1 0.2858
+   labels with F1 = 0.0: 10/100
+   empty predictions: 935 (7.18%)
+   -> runs\baseline_tfidf.json   [165s]

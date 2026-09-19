@@ -1,0 +1,73 @@
+scratch: C:\Users\KARISHMA\AppData\Local\Temp\pv_cpu_verify_quxbdb6s
+
+======================================================================
+1. PRETRAIN 20 STEPS (tiny, CPU)
+======================================================================
+    loss[0]=10.3565  loss[19]=9.4080  min=9.3742  ln(32000)=10.37
+  [PASS] 1a start near ln(vocab) -- 10.3565 in [9,12]
+  [PASS] 1b loss decreases -- 10.3565 -> 9.4080
+  [PASS] 1c no NaN/Inf -- 20 finite values
+
+======================================================================
+2. KILL AT STEP 10, RESUME (loss continues + data position correct)
+======================================================================
+    killed at step 10; sampler epoch 0 cursor 20; next index would be 635545
+  [PASS] 2a sampler position restored -- cursor 20 == 20
+  [PASS] 2b next index matches uninterrupted run -- 635545 == 635545
+  [PASS] 2c resumed batches == batches 10-19 of the uninterrupted run -- identical token ids
+  [PASS] 2d loss continues (no restart spike) -- resumed 9.7925 vs reference 9.7925 (|diff| 0.0000)
+    combined curve: 10.356 -> 9.865 || 9.792 -> 9.408
+
+======================================================================
+3. FINETUNE 20 STEPS (-100 masking)
+======================================================================
+  [PASS] 3a supervised positions == target_ids (8 rows)
+  [PASS] 3b everything else ignored -- 4 supervised / 2048 positions
+    loss[0]=10.3715  loss[19]=9.7549
+  [PASS] 3c finetune loss finite -- 20 steps
+  [PASS] 3d finetune loss decreases -- 10.3715 -> 9.7549
+
+======================================================================
+4. EVALUATE 20 TEST ROWS (generation, parsing, F1, failures)
+======================================================================
+  [PASS] 4a parse failure taxonomy (6 cases)
+  [PASS] 4b micro-F1 arithmetic -- 0.6667 == 0.6667 (TP2 FP1 FN1)
+  [PASS] 4c exact-match arithmetic -- 0.0000 (neither row exactly right)
+   4/20
+  [PASS] 4d generation ran on 20 rows -- 20 sequences, max len 8
+  [PASS] 4e metrics computed -- micro 0.0000 macro 0.0000 exact 0.0000
+  [PASS] 4f failure taxonomy on untrained model -- 20/20 rows failed (expected ~20/20 -- model is random)
+
+======================================================================
+5. TOKENIZER HASH GUARD (deliberate mismatch)
+======================================================================
+[verify] tokenizer sha256 b2de5ea098854626... OK + shard manifest OK
+  [PASS] 5a passes on the real tokenizer
+  [PASS] 5b fires on a corrupted tokenizer -- SystemExit raised
+  [PASS] 5c tokenizer restored after test -- b2de5ea098854626...
+
+======================================================================
+SUMMARY
+======================================================================
+  PASS  1a start near ln(vocab)
+  PASS  1b loss decreases
+  PASS  1c no NaN/Inf
+  PASS  2a sampler position restored
+  PASS  2b next index matches uninterrupted run
+  PASS  2c resumed batches == batches 10-19 of the uninterrupted run
+  PASS  2d loss continues (no restart spike)
+  PASS  3a supervised positions == target_ids (8 rows)
+  PASS  3b everything else ignored
+  PASS  3c finetune loss finite
+  PASS  3d finetune loss decreases
+  PASS  4a parse failure taxonomy (6 cases)
+  PASS  4b micro-F1 arithmetic
+  PASS  4c exact-match arithmetic
+  PASS  4d generation ran on 20 rows
+  PASS  4e metrics computed
+  PASS  4f failure taxonomy on untrained model
+  PASS  5a passes on the real tokenizer
+  PASS  5b fires on a corrupted tokenizer
+  PASS  5c tokenizer restored after test
+
+  20/20 checks passed in 159s

@@ -1,0 +1,77 @@
+{
+  "d_model": 1024,
+  "non_embedding_params": 302000000,
+  "context": 2048,
+  "heldout_docs": 4000,
+  "train_budget_gb": 1.5,
+  "vocabs": {
+    "32000": {
+      "vocab_size": 32000,
+      "path": "data\\tokenizer\\bpe_32000_final.json",
+      "sha256": "b2de5ea09885462611a73045cc98d88f670f0893ce7518bc6e36d1895dde8203",
+      "mix": "capped (Decision 2)",
+      "train_seconds": 222.7,
+      "chars_per_token_corpus": 4.422056616637631,
+      "chars_per_token_ilsi": 4.605607474299245,
+      "embedding_params": 32768000,
+      "embedding_params_tied_pct_of_300M": 9.78827128040912,
+      "embedding_params_untied": 65536000,
+      "embedding_params_untied_pct": 17.831178442383877,
+      "ilsi_tokens_p50": 563,
+      "ilsi_tokens_p90": 3693,
+      "ilsi_over_context": 9617,
+      "ilsi_over_context_pct": 22.495906432748537,
+      "corpus_tokens_projected_13565M_chars": 3067.6902572800404,
+      "verify": {
+        "ipc_single_id": 100,
+        "ipc_split": [],
+        "parenthesised": {
+          "<ipc_294(b)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_294(b)>"
+            ],
+            "roundtrip_ok": true
+          },
+          "<ipc_376(2)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_376(2)>"
+            ],
+            "roundtrip_ok": true
+          }
+        },
+        "masks": {
+          "<SECTION>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ACT>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ENTITY>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          }
+        },
+        "mask_in_context": {
+          "roundtrip_ok": true,
+          "each_mask_single_id": true
+        },
+        "eos": {
+          "token": "<|endoftext|>",
+          "id": 0,
+          "n_ids": 1,
+          "in_vocab": true,
+          "roundtrip_ok": true
+        },
+        "roundtrip_ilsi": {
+          "n": 100,
+          "failures": 0,
+          "examples": []
+        }
+      }
+    }
+  }
+}

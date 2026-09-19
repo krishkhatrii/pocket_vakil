@@ -1,0 +1,114 @@
+LM(
+  (blocks): ModuleList(
+    (0): Embedding(
+      (embedding): Embedding(32000, 128)
+    )
+    (1): Repeat(
+      (stack): ModuleList(
+        (0-1): 2 x TransformerBlock(
+          (blocks): ModuleList(
+            (0): Block(
+              (blocks): ModuleList(
+                (0): Residual(
+                  (block): Block(
+                    (blocks): ModuleList(
+                      (0): LayerNorm()
+                      (1): FlashAttentionwithRoPE(
+                        embed_dim=128, num_heads=4, head_dim=32, causal=True, flash_attn=True
+                        (dropout): Dropout(p=0.0, inplace=False)
+                        (rope): RotaryPositionalEmbedding()
+                        (q_proj): Linear(in_features=128, out_features=128, bias=True)
+                        (k_proj): Linear(in_features=128, out_features=128, bias=True)
+                        (v_proj): Linear(in_features=128, out_features=128, bias=True)
+                        (out_proj): Linear(in_features=128, out_features=128, bias=True)
+                      )
+                    )
+                  )
+                )
+                (1): Residual(
+                  (block): Block(
+                    (blocks): ModuleList(
+                      (0): LayerNorm()
+                      (1): SwiGLUFFN(
+                        (up_proj): Linear(in_features=128, out_features=672, bias=True)
+                        (act): SwiGLU()
+                        (down_proj): Linear(in_features=336, out_features=128, bias=True)
+                        (dropout): Dropout(p=0.0, inplace=False)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+    (2): OutputHead(
+      (blocks): ModuleList(
+        (0): LayerNorm()
+        (1): _TiedEmbeddingProjection()
+      )
+    )
+  )
+)
+"""
+Pocket Vakil model definition, built from OLM's building blocks.
+
+The architecture is `olm.nn.blocks.LM`, assembled from OLM primitives:
+
+    Embedding -> Repeat(TransformerBlock) x N -> OutputHead
+
+and each `TransformerBlock` is pre-norm with two residual branches:
+
+    Residual(LayerNorm -> FlashAttentionwithRoPE)
+    Residual(LayerNorm -> SwiGLUFFN)
+
+Nothing here is hand-rolled. The only project-specific parts are the two size
+presets and the parameter accounting used to confirm the compute budget.
+
+Three presets, one class. **Only `embed_dim`, `num_heads` and `num_layers` differ**
+-- context is 2048 everywhere, so a small preset exercises the exact sequence
+length production uses and its throughput numbers extrapolate honestly.
+
+    TINY        ~4M non-emb   -- CPU correctness checks only
+    DRY_RUN     ~55M non-emb  -- single-GPU rehearsal
+    PROD_300M   ~299M non-emb -- the production run
+
+No preset assumes a particular GPU. Batch size and throughput are measured on
+whatever card is present (see `src/slot1.py probe` and `smoke`), never assumed.
+
+    python src/model.py     # parameter breakdown for every preset
+"""
+
+from dataclasses import dataclass, asdict
+
+import torch
+from olm.nn.blocks.LM import LM
+
+# bpe_32000_final.json -- vocab includes the 100 IPC label tokens, the three ILSI
+# mask tokens (<SECTION>/<ACT>/<ENTITY>) and EOS.
+VOCAB_SIZE = 32_000
+EOS_ID = 0
+
+
+@dataclass
+class ModelConfig:
+    """Every argument OLM's `LM` accepts, plus a name for logging."""
+
+    name: str
+    embed_dim: int
+    num_heads: int
+    num_layers: int
+    max_seq_len: int
+    vocab_size: int = VOCAB_SIZE
+    dropout: float = 0.0          # no dropout: single pass over ~2B tokens
+    causal: bool = True
+    ff_multiplier: float = 2.625  # SwiGLU parity with a 4x GELU MLP (8/3 ~ 2.667)
+    tie_embeddings: bool = True
+
+    @property
+    def head_dim(self):
+        assert self.embed_dim % self.num_heads == 0, "embed_dim must divide num_heads"
+        return self.embed_dim // self.num_heads
+

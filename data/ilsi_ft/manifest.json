@@ -1,0 +1,160 @@
+{
+  "tokenizer": "bpe_32000_final.json",
+  "seq_len": 2048,
+  "eos_id": 0,
+  "splits": {
+    "train": {
+      "rows": 42750,
+      "rows_with_duplicate_labels": 3,
+      "input_untruncated_p50": 563,
+      "input_untruncated_p90": 3693,
+      "input_untruncated_max": 117394,
+      "rows_where_input_plus_target_exceeds_seq_len": 9637,
+      "pct_exceeds": 22.542690058479533,
+      "rows_truncated": 9637,
+      "pct_truncated": 22.542690058479533,
+      "target_min": 2,
+      "target_max": 32,
+      "target_mean": 4.704982456140351,
+      "combined_p50": 568,
+      "combined_p90": 2048,
+      "combined_max": 2048,
+      "combined_over_seq_len_after_build": 0,
+      "file": "train.jsonl"
+    },
+    "dev": {
+      "rows": 10181,
+      "rows_with_duplicate_labels": 1,
+      "input_untruncated_p50": 709,
+      "input_untruncated_p90": 3938,
+      "input_untruncated_max": 103333,
+      "rows_where_input_plus_target_exceeds_seq_len": 2636,
+      "pct_exceeds": 25.89136627050388,
+      "rows_truncated": 2636,
+      "pct_truncated": 25.89136627050388,
+      "target_min": 2,
+      "target_max": 29,
+      "target_mean": 4.915725370788724,
+      "combined_p50": 714,
+      "combined_p90": 2048,
+      "combined_max": 2048,
+      "combined_over_seq_len_after_build": 0,
+      "file": "dev.jsonl"
+    },
+    "test": {
+      "rows": 13019,
+      "rows_with_duplicate_labels": 0,
+      "input_untruncated_p50": 700,
+      "input_untruncated_p90": 3747,
+      "input_untruncated_max": 192895,
+      "rows_where_input_plus_target_exceeds_seq_len": 3153,
+      "pct_exceeds": 24.218449957754054,
+      "rows_truncated": 3153,
+      "pct_truncated": 24.218449957754054,
+      "target_min": 2,
+      "target_max": 24,
+      "target_mean": 4.904216913741455,
+      "combined_p50": 705,
+      "combined_p90": 2048,
+      "combined_max": 2048,
+      "combined_over_seq_len_after_build": 0,
+      "file": "test.jsonl"
+    }
+  },
+  "duplicates": [
+    {
+      "split": "train",
+      "id": "17230589",
+      "raw": [
+        "Section 376",
+        "Section 376",
+        "Section 376(2)",
+        "Section 376(2)"
+      ],
+      "repeated": {
+        "Section 376": 2,
+        "Section 376(2)": 2
+      },
+      "n_before": 4,
+      "n_after": 2
+    },
+    {
+      "split": "train",
+      "id": "58756529",
+      "raw": [
+        "Section 34",
+        "Section 34",
+        "Section 188",
+        "Section 188",
+        "Section 354",
+        "Section 354",
+        "Section 500",
+        "Section 500",
+        "Section 506",
+        "Section 506",
+        "Section 509",
+        "Section 509"
+      ],
+      "repeated": {
+        "Section 34": 2,
+        "Section 188": 2,
+        "Section 354": 2,
+        "Section 500": 2,
+        "Section 506": 2,
+        "Section 509": 2
+      },
+      "n_before": 12,
+      "n_after": 6
+    },
+    {
+      "split": "train",
+      "id": "153618826",
+      "raw": [
+        "Section 307",
+        "Section 307",
+        "Section 324",
+        "Section 326",
+        "Section 326"
+      ],
+      "repeated": {
+        "Section 307": 2,
+        "Section 326": 2
+      },
+      "n_before": 5,
+      "n_after": 3
+    },
+    {
+      "split": "dev",
+      "id": "67916213",
+      "raw": [
+        "Section 498",
+        "Section 498A",
+        "Section 498A",
+        "Section 498A",
+        "Section 506",
+        "Section 506",
+        "Section 506"
+      ],
+      "repeated": {
+        "Section 498A": 3,
+        "Section 506": 3
+      },
+      "n_before": 7,
+      "n_after": 3
+    }
+  ],
+  "worst_case_labels": {
+    "labels": 31,
+    "id": "96713847",
+    "split": "train",
+    "target_tokens": 32
+  },
+  "format": {
+    "input_ids": "head-truncated fact description, no special tokens",
+    "target_ids": "IPC label token ids ascending by section, then EOS",
+    "sequence": "input_ids + target_ids, total <= seq_len by construction",
+    "delimiter": "none; label tokens never occur in fact text, so the first <ipc_*> is the boundary. No separator token can be added -- the tokenizer is frozen.",
+    "loss": "stored separately so loss can be masked to target_ids only",
+    "sort_key": "index into label_map.json sections (ascending by section number)"
+  }
+}

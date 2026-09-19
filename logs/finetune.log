@@ -1,0 +1,47 @@
+label tokens: 100/100 present, all single-id, eos_id 0
+  train  42,750 rows | dup 3 | input p90 3,693 | truncated 22.5% | combined max 2,048 | over-limit after build 0
+  dev    10,181 rows | dup 1 | input p90 3,938 | truncated 25.9% | combined max 2,048 | over-limit after build 0
+  test   13,019 rows | dup 0 | input p90 3,747 | truncated 24.2% | combined max 2,048 | over-limit after build 0
+
+worst case: 31 labels (train 96713847) -> 32 target tokens, input budget 2,016
+duplicates fixed: 4
+   train   17230589  4->2  repeated {'Section 376': 2, 'Section 376(2)': 2}
+   train   58756529  12->6  repeated {'Section 34': 2, 'Section 188': 2, 'Section 354': 2, 'Section 500': 2, 'Section 506': 2, 'Section 509': 2}
+   train  153618826  5->3  repeated {'Section 307': 2, 'Section 326': 2}
+   dev     67916213  7->3  repeated {'Section 498A': 3, 'Section 506': 3}
+
+======================================================================
+WORKED EXAMPLES
+======================================================================
+
+--- 1000008 ---
+RAW FACT (9,493 chars): (a), <SECTION> of the <ACT>. The gist of theprosecution case relevant <ENTITY> the purpose of this proceedingmay be stated thus: With the growth of industry, commerceand trade in and around the city of Mumbai which generatessubstantial quantity of wealth, there has been increase oforganised activiti...
+
+INPUT (2,038 tokens), decoded head: '(a), <SECTION> of the <ACT>. The gist of theprosecution case relevant <ENTITY> the purpose of this proceedingmay be stated thus: With the growth of industry, commerceand trade in and around the city of Mumbai which generatessubstantial quan'
+INPUT tail: 'r <SECTION> <ACT> and convicted themthereunder and imposed the punishment as noted earlier. We have perused the evidence of these witnesses.'
+
+TARGET ids: [7, 13, 73, 0]
+TARGET decoded: '<ipc_5><ipc_120><ipc_395><|endoftext|>'
+TARGET labels : ['Section 5', 'Section 120', 'Section 395']
+
+--- 100009671 ---
+RAW FACT (700 chars): Item No. 44 And In the matter of: <ENTITY> & Ors. - versus - The State of West Bengal Opposite Party Mr. <ENTITY> For the Petitioners Ms. <ENTITY> For the State The Petitioners, apprehending arrest in connection with Hogalberia Police Station Case No. 133 of 2013 dated 06.03.2013 under <SECTION> of ...
+
+INPUT (156 tokens), decoded head: 'Item No. 44 And In the matter of: <ENTITY> & Ors. - versus - The State of West Bengal Opposite Party Mr. <ENTITY> For the Petitioners Ms. <ENTITY> For the State The Petitioners, apprehending arrest in connection with Hogalberia Police Stati'
+INPUT tail: ' and other relevant material on record. The application <ENTITY> anticipatory bail is, thus, disposed of. (<ENTITY>, J) (<ENTITY>, J)'
+
+TARGET ids: [9, 85, 98, 0]
+TARGET decoded: '<ipc_34><ipc_438><ipc_498A><|endoftext|>'
+TARGET labels : ['Section 34', 'Section 438', 'Section 498A']
+
+--- 1000196 ---
+RAW FACT (24,282 chars): For offences under the last three countsthey were tried by jury and <ENTITY> that under the first with the aid of assessors. The appellants have been sentenced to 3 years' R. I. each under <SECTION>, <ACT> They have also been sentenced to 2 years' R. I. each under <SECTION>, <ACT>, plus a fine of Rs...
+
+INPUT (2,043 tokens), decoded head: "For offences under the last three countsthey were tried by jury and <ENTITY> that under the first with the aid of assessors. The appellants have been sentenced to 3 years' R. I. each under <SECTION>, <ACT> They have also been sentenced to 2"
+INPUT tail: 'e <ENTITY> given to the branch office in Kanpur of a company in Delhi, manufacturing conduit pipes and articles, like tubular furniture made'
+
+TARGET ids: [11, 14, 21, 92, 0]
+TARGET decoded: '<ipc_109><ipc_120B><ipc_161><ipc_467><|endoftext|>'
+TARGET labels : ['Section 109', 'Section 120B', 'Section 161', 'Section 467']
+
+-> data\ilsi_ft/  [64s]

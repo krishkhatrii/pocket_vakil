@@ -1,0 +1,25 @@
+100 IPC tokens + 3 masks + EOS
+held-out corpus sample (4,000 docs, disjoint stride)...
+   126.9M chars
+
+=== training vocab 16,000 ===
+   trained in 2.8 min -> data\tokenizer\bpe_16000.json  (vocab 16,000)
+   measuring corpus...
+   measuring ILSI...
+   chars/token  corpus 4.228   ILSI 4.467
+   embedding    16.4M tied  (5.1% of budget)
+   ILSI >2048   9,837/42,750 (23.0%)
+   verify       100/100 single-id, roundtrip 100/100
+
+=== training vocab 32,000 ===
+   trained in 3.5 min -> data\tokenizer\bpe_32000.json  (vocab 32,000)
+   measuring corpus...
+   measuring ILSI...
+   chars/token  corpus 4.418   ILSI 4.604
+   embedding    32.8M tied  (9.8% of budget)
+   ILSI >2048   9,620/42,750 (22.5%)
+   verify       100/100 single-id, roundtrip 100/100
+
+-> data\tokenizer\comparison.json
+
+NOTHING FROZEN. Choose a vocab, record it in runs/, then pack.

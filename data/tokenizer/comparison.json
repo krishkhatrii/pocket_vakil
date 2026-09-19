@@ -1,0 +1,125 @@
+{
+  "d_model": 1024,
+  "non_embedding_params": 302000000,
+  "context": 2048,
+  "heldout_docs": 4000,
+  "train_budget_gb": 1.5,
+  "vocabs": {
+    "16000": {
+      "vocab_size": 16000,
+      "train_seconds": 167.8,
+      "chars_per_token_corpus": 4.228227564861512,
+      "chars_per_token_ilsi": 4.466623149220595,
+      "embedding_params": 16384000,
+      "embedding_params_tied_pct_of_300M": 5.145987235539474,
+      "embedding_params_untied": 32768000,
+      "embedding_params_untied_pct": 9.78827128040912,
+      "ilsi_tokens_p50": 582,
+      "ilsi_tokens_p90": 3800,
+      "ilsi_over_context": 9837,
+      "ilsi_over_context_pct": 23.010526315789473,
+      "corpus_tokens_projected_13565M_chars": 3208.3183300576006,
+      "verify": {
+        "ipc_single_id": 100,
+        "ipc_split": [],
+        "parenthesised": {
+          "<ipc_294(b)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_294(b)>"
+            ],
+            "roundtrip_ok": true
+          },
+          "<ipc_376(2)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_376(2)>"
+            ],
+            "roundtrip_ok": true
+          }
+        },
+        "masks": {
+          "<SECTION>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ACT>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ENTITY>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          }
+        },
+        "mask_in_context": {
+          "roundtrip_ok": true,
+          "each_mask_single_id": true
+        },
+        "roundtrip_ilsi": {
+          "n": 100,
+          "failures": 0,
+          "examples": []
+        }
+      }
+    },
+    "32000": {
+      "vocab_size": 32000,
+      "train_seconds": 211.6,
+      "chars_per_token_corpus": 4.418094489827481,
+      "chars_per_token_ilsi": 4.603546610846374,
+      "embedding_params": 32768000,
+      "embedding_params_tied_pct_of_300M": 9.78827128040912,
+      "embedding_params_untied": 65536000,
+      "embedding_params_untied_pct": 17.831178442383877,
+      "ilsi_tokens_p50": 565,
+      "ilsi_tokens_p90": 3695,
+      "ilsi_over_context": 9620,
+      "ilsi_over_context_pct": 22.502923976608187,
+      "corpus_tokens_projected_13565M_chars": 3070.441347787858,
+      "verify": {
+        "ipc_single_id": 100,
+        "ipc_split": [],
+        "parenthesised": {
+          "<ipc_294(b)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_294(b)>"
+            ],
+            "roundtrip_ok": true
+          },
+          "<ipc_376(2)>": {
+            "n_ids": 1,
+            "tokens": [
+              "<ipc_376(2)>"
+            ],
+            "roundtrip_ok": true
+          }
+        },
+        "masks": {
+          "<SECTION>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ACT>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          },
+          "<ENTITY>": {
+            "n_ids": 1,
+            "roundtrip_ok": true
+          }
+        },
+        "mask_in_context": {
+          "roundtrip_ok": true,
+          "each_mask_single_id": true
+        },
+        "roundtrip_ilsi": {
+          "n": 100,
+          "failures": 0,
+          "examples": []
+        }
+      }
+    }
+  }
+}

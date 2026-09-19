@@ -1,0 +1,28 @@
+{
+  "architectures": [
+    "PocketVakilForCausalLM"
+  ],
+  "attention_bias": true,
+  "auto_map": {
+    "AutoConfig": "configuration_pocket_vakil.PocketVakilConfig",
+    "AutoModelForCausalLM": "modeling_pocket_vakil.PocketVakilForCausalLM"
+  },
+  "bos_token_id": 0,
+  "dtype": "float32",
+  "eos_token_id": 0,
+  "hidden_size": 1024,
+  "initializer_range": 0.02,
+  "intermediate_size": 2688,
+  "layer_norm_eps": 1e-05,
+  "max_position_embeddings": 2048,
+  "mlp_bias": true,
+  "model_type": "pocket_vakil",
+  "num_attention_heads": 16,
+  "num_hidden_layers": 24,
+  "pad_token_id": 0,
+  "rope_theta": 10000,
+  "tie_word_embeddings": true,
+  "transformers_version": "5.16.1",
+  "use_cache": false,
+  "vocab_size": 32000
+}

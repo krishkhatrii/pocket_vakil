@@ -1,0 +1,24 @@
+100 IPC tokens + 3 masks + EOS
+held-out corpus sample (4,000 docs, disjoint stride)...
+   126.9M chars
+
+=== training vocab 32,000 ===
+      supreme_court       179.8M chars (12.0%)
+      allahabad           252.3M chars (16.9%)
+      bombay              265.0M chars (17.7%)
+      calcutta              3.6M chars ( 0.2%)
+      delhi               320.9M chars (21.5%)
+      madhya_pradesh      205.3M chars (13.7%)
+      madras              269.1M chars (18.0%)
+   trained in 3.7 min -> data\tokenizer\bpe_32000_final.json  (vocab 32,000)
+   sha256 b2de5ea09885462611a73045cc98d88f670f0893ce7518bc6e36d1895dde8203
+   measuring corpus...
+   measuring ILSI...
+   chars/token  corpus 4.422   ILSI 4.606
+   embedding    32.8M tied  (9.8% of budget)
+   ILSI >2048   9,617/42,750 (22.5%)
+   verify       100/100 single-id, roundtrip 100/100
+
+-> data\tokenizer\bpe_32000_final_report.json
+
+NOTHING FROZEN. Choose a vocab, record it in runs/, then pack.
