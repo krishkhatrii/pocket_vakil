@@ -3,9 +3,9 @@
 A 332M-parameter decoder-only language model, trained from scratch, that identifies
 which Indian Penal Code sections apply to a described set of case facts.
 
-Built for the IAIRO SLM Bootcamp with [OpenLanguageModel](https://openlanguagemodel.github.io/openlanguagemodel/).
-Weights: [`Pocket-Vakil/pocket-vakil-332m-ipc`](https://huggingface.co/Pocket-Vakil/pocket-vakil-332m-ipc)
-Full writeup: [Writeup.pdf](Writeup.pdf)
+- **Model:** [Pocket-Vakil/pocket-vakil-332m-ipc](https://huggingface.co/Pocket-Vakil/pocket-vakil-332m-ipc)
+- **Writeup:** [Writeup.pdf](submission/Writeup.pdf)
+- **Built with:** [OpenLanguageModel](https://openlanguagemodel.github.io/openlanguagemodel/) for the IAIRO SLM Bootcamp
 ---
 
 ## Quick start
