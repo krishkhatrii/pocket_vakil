@@ -5,7 +5,7 @@ which Indian Penal Code sections apply to a described set of case facts.
 
 Built for the IAIRO SLM Bootcamp with [OpenLanguageModel](https://openlanguagemodel.github.io/openlanguagemodel/).
 Weights: [`Pocket-Vakil/pocket-vakil-332m-ipc`](https://huggingface.co/Pocket-Vakil/pocket-vakil-332m-ipc)
-
+Full writeup: [Writeup.pdf](Writeup.pdf)
 ---
 
 ## Quick start
@@ -16,10 +16,13 @@ python demo_layman.py
 ```
 
 Describe an incident in plain English:
-the woman was harassed for dowry by her husband and in-laws and died of
-burns within three years of marriage
+
+```
+> the woman was harassed for dowry by her husband and in-laws and died of
+  burns within three years of marriage
 raw output (0.6s): '<ipc_304B><ipc_498A><|endoftext|>'
 sections: ['304B', '498A']
+```
 
 
 Weights download from the Hub on first run (~1.3 GB, then cached). Inference is
@@ -40,6 +43,8 @@ Full 13,019-row ILSI test split:
 Slightly below the baseline on micro-F1, well above it on macro-F1. Every one of the
 100 IPC sections is predicted correctly at least sometimes — the baseline collapses on
 rare labels.
+
+![Training loss](figures/fig1_pretrain_loss.png)
 
 **Ablation.** A v3 variant with a heavier instruction mix (73/19/8 vs v2's 81/11/8)
 scored worse across the board: micro 0.4494, macro 0.3042, 17 dead labels. The v2
@@ -64,10 +69,13 @@ are special tokens in the vocabulary, emitted sorted ascending followed by EOS. 
 classification head. Trade-off: no per-label confidence scores, so no threshold tuning.
 
 **Prompt format** (required — the model emits bare EOS without it):
+
+```
 {passage}
 
-TASK: identify the applicable IPC sections
-ANSWER:
+### TASK: identify the applicable IPC sections
+### ANSWER:
+```
 
 
 ## Training
@@ -161,20 +169,25 @@ invalidates every packed shard. `data/ilsi/label_map.json` is frozen alongside i
 it defines the 100 special tokens and the reverse map used at eval.
 
 ## Layout
+
 ```
 pocket_vakil/
 ├── README.md
 ├── PLAN.md                      design decisions
 ├── FINDINGS.md                  measured facts and gotchas
+├── requirements.txt             inference dependencies
 ├── demo_layman.py               plain-language demo
 ├── predict.py                   inference entry point (also on HF)
 │
 ├── src/                         pipeline: corpus → tokenizer → pack → train → eval
 │                                plus convert_to_hf.py, inference_hf.py,
 │                                make_plots.py, generate_submission_files.py
-├── runs/                        run logs, metrics, and eval results
+├── pocket-vakil-332m-ipc/       HF-format model files (weights on the Hub)
+├── external/olm/                OpenLanguageModel submodule, pinned at eeab195
+├── runs/                        run logs and metrics
+├── results/                     eval result JSONs
+├── figures/                     training and eval plots
 ├── logs/                        extraction and verification logs
-├── submission/                  frozen bootcamp submission bundle
 ├── archive/                     one-off diagnostics and superseded artifacts
 └── data/                        manifests only; corpus and shards gitignored
 ```
